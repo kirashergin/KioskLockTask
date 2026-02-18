@@ -37,5 +37,8 @@ class KioskApp : Application() {
         }
         val activity = ComponentName(this, MainActivity::class.java)
         dpm.addPersistentPreferredActivity(admin, filter, activity)
+
+        // Suppress "swipe to exit immersive" education bubble
+        try { dpm.setSecureSetting(admin, "immersive_mode_confirmations", "confirmed") } catch (_: Exception) {}
     }
 }

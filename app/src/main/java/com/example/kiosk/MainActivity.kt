@@ -26,11 +26,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // Keep screen on — prevents lock screen from appearing
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        // FLAG_LAYOUT_NO_LIMITS — window extends under system bars, so our content is behind them
+        window.addFlags(
+            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
 
-        // Transparent system bars — nav buttons invisible even if bar briefly appears
+        // Transparent system bars — even if bars briefly flash, they're invisible
         window.navigationBarColor = Color.TRANSPARENT
         window.statusBarColor = Color.TRANSPARENT
+        window.isNavigationBarContrastEnforced = false
+        window.isStatusBarContrastEnforced = false
 
         root = View(this)
         setContentView(root)
@@ -38,6 +44,7 @@ class MainActivity : ComponentActivity() {
         startLockTaskIfPermitted()
         enterImmersive()
         setRandomColor()
+
 
         root.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
